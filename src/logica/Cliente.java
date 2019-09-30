@@ -23,6 +23,7 @@ public class Cliente {
 
 //	public static final String SERVIDOR = "3.82.26.85";
 	public static final String SERVIDOR = "localhost";
+//	public static final String SERVIDOR = "25.5.99.233";
 	public static final int PUERTO = 8080;
 	public static final String INICIO = " [CLIENTE] ";
 	public static final String RUTA_LOG = "./data/logs/";
@@ -75,7 +76,7 @@ public class Cliente {
 	public void comunicarse() {
 		try {
 			escribirEnLog("Enviando mensaje de " + PREPARADO + " al servidor");
-			out.print(PREPARADO);
+			out.println(PREPARADO);
 			escribirEnLog("Mensaje enviado al servidor");
 	
 			String leido = in.readLine();
@@ -137,12 +138,12 @@ public class Cliente {
 				if(created.equals(h)) {
 					escribirEnLog("El Archivo se verificó y no contiene errores ! :D");
 					escribirEnLog("Se le envía al servidor confirmación: " + RECIBIDO);
-					out.print(RECIBIDO);
+					out.println(RECIBIDO);
 				}
 				else {
 					escribirEnLog("El archivo se corrompió :( tiene errores porque los hashes no coinciden");
 					escribirEnLog("Se le envía al servidor mensaje de error: " + ERROR);
-					out.print(ERROR);
+					out.println(ERROR);
 				}
 			}
 			else {

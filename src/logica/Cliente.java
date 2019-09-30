@@ -106,9 +106,10 @@ public class Cliente {
 			// Contabilizando el tiempo inicial
 			long ini = System.currentTimeMillis();
 			int r;
-			// Recibiendo paquetes del archivo a descargar
 			
-			while ((r = dis.read(buffer)) > 0 ) {
+			// Recibiendo paquetes del archivo a descargar
+			long tamTotal = dis.readLong();
+			while (tam < tamTotal && (r = dis.read(buffer)) != -1 ) {
 				//System.out.println(r);
 				fos.write(buffer, 0, r);
 				numPaquetes++;

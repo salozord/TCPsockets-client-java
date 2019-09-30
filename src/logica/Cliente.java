@@ -79,11 +79,8 @@ public class Cliente {
 			out.println(PREPARADO);
 			escribirEnLog("Mensaje enviado al servidor");
 	
-			String leido = in.readLine();
-			byte[] bytesLeido = convertirABytes(leido);
-			String nombre = new String( bytesLeido );
 			// Esperando la recepción del nombre del archivo a descargar
-//			String nombre = new String(convertirABytes(in.readLine()));
+			String nombre = in.readLine();
 			if(nombre.contains(NOMBRE)) {
 				String n = nombre.split(SEP)[1];
 				escribirEnLog("Nombre del archivo a descargar recibido --> " + n);
@@ -100,6 +97,9 @@ public class Cliente {
 			byte[] blob = convertirABytes(in.readLine());
 			while(!(new String(blob)).contains(FINARCH)) {
 				blobsArchivo.add(blob);
+				numPaquetes++;
+				tam += blob.length;
+				escribirEnLog("Paquete Recibido! tamaño: " + blob.length + " bytes");
 				blob = convertirABytes(in.readLine());
 			}
 			

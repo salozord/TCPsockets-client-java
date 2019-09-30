@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ import javax.xml.bind.DatatypeConverter;
 
 public class Cliente {
 
-	public static final String SERVIDOR = "25.7.50.208";
+	public static final String SERVIDOR = "3.82.26.85";
 	public static final int PUERTO = 8080;
 	public static final String INICIO = "[CLIENTE]";
 	public static final String PREPARADO = "PREPARADO";
@@ -52,7 +51,7 @@ public class Cliente {
 		this.log += "\n" + INICIO + mensaje;
 	}
 	
-	private void comunicarse() throws Exception {
+	public void comunicarse() throws Exception {
 		escribirEnLog("Enviando mensaje de " + PREPARADO + " al servidor");
 		out.print(PREPARADO);
 		escribirEnLog("Mensaje enviado al servidor");
@@ -65,6 +64,7 @@ public class Cliente {
 		}
 		else {
 			escribirEnLog("ERROR :: Llegó un mensaje que no debía llegar " + nombre);
+			cerrar();
 		}
 		
 		

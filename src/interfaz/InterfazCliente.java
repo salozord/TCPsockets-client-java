@@ -2,7 +2,10 @@ package interfaz;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,6 +21,7 @@ public class InterfazCliente extends JFrame {
 	private JTextField nombreArchivo;
 	private JTextField numPaquetes;
 	private JTextField tam;
+//	private JButton update;
 	
 	public InterfazCliente() throws Exception {
 		
@@ -31,7 +35,7 @@ public class InterfazCliente extends JFrame {
 		add(logger, BorderLayout.CENTER);
 		
 		JPanel aux = new JPanel();
-		aux.setLayout(new GridLayout(1, 6));
+		aux.setLayout(new GridLayout(1, 7));
 		
 		aux.add(new JLabel("Nombre Archivo:"));
 		nombreArchivo = new JTextField("NINGUNO");
@@ -45,6 +49,8 @@ public class InterfazCliente extends JFrame {
 		tam = new JTextField("0");
 		tam.setEditable(false);
 		aux.add(tam);
+//		update = new JButton("Actualizar");
+//		update.addActionListener(this);
 		
 		add(aux, BorderLayout.SOUTH);
 	}
@@ -74,5 +80,4 @@ public class InterfazCliente extends JFrame {
 			e.printStackTrace();
 		}
 	}
-	
 }

@@ -2,10 +2,12 @@ package logica;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -44,7 +46,7 @@ public class Cliente {
 	
 	private BufferedReader in;
 	
-	private ArrayList<byte[]> blobsArchivo;
+//	private ArrayList<byte[]> blobsArchivo;
 	
 	private InterfazCliente interfaz;
 	
@@ -61,7 +63,7 @@ public class Cliente {
 		nombreArchivo = "Ninguno";
 		numPaquetes = 0;
 		tam = 0;
-		blobsArchivo = new ArrayList<>();
+//		blobsArchivo = new ArrayList<>();
 		
 //		log = "";
 //		escribirEnLog("Cliente inicializado, conectando con el servidor . . .\n");
@@ -90,31 +92,49 @@ public class Cliente {
 				cerrar();
 			}
 			
+			// Iniciando recepción y escritura del archivo
+			String rutaDesc = RUTA_DOWN + nombreArchivo;
+			escribirEnLog("Iniciando recepción y escribiendo el archivo en la ruta " + rutaDesc + " . . .");
+			DataInputStream dis = new DataInputStream(socket.getInputStream());
+			File f = new File(rutaDesc);
+			FileOutputStream fos = new FileOutputStream(f);
+			if(!f.exists())
+				f.createNewFile();
+			byte[] buffer = new byte[1024];
+			
 			// Contabilizando el tiempo inicial
 			long ini = System.currentTimeMillis();
-			
+			int r;
 			// Recibiendo paquetes del archivo a descargar
-			byte[] blob = convertirABytes(in.readLine());
-			while(!(new String(blob)).contains(FINARCH)) {
-				blobsArchivo.add(blob);
+			while ((r = dis.read(buffer)) != -1) {
+				fos.write(buffer, 0, r);
 				numPaquetes++;
-				tam += blob.length;
-				escribirEnLog("Paquete Recibido! tamaño: " + blob.length + " bytes");
-				blob = convertirABytes(in.readLine());
+				tam += (r);
+				escribirEnLog("Paquete Recibido! tamaño: " + (r) + " bytes");
 			}
+			fos.flush(); // POr si acaso algo queda en el buffer de escritura
+			fos.close();
+			dis.close();
+			
+//			byte[] blob = convertirABytes(in.readLine());
+//			while(!(new String(blob)).contains(FINARCH)) {
+//				blobsArchivo.add(blob);
+//				numPaquetes++;
+//				tam += blob.length;
+//				escribirEnLog("Paquete Recibido! tamaño: " + blob.length + " bytes");
+//				blob = convertirABytes(in.readLine());
+//			}
 			
 			// Contabilizando el tiempo final
 			long fin = System.currentTimeMillis();
 			tiempo = (fin - ini)/1000;
+			escribirEnLog("Escritura del archivo exitosa !");
 			escribirEnLog("Finalizó el envío del archivo. El tiempo total fue de " + tiempo + " segundos");
 			escribirEnLog("Número total de paquetes recibidos: " + numPaquetes + " paquetes");
 			escribirEnLog("Tamaño total del archivo recibido: " + tam/(1024^2) + " MiBytes");
 			
 			// Guardando el archivo en local
-			String rutaDesc = RUTA_DOWN + nombreArchivo;
-			escribirEnLog("Escribiendo el archivo en la ruta " + rutaDesc);
-			createFile(rutaDesc);
-			escribirEnLog("Escritura del archivo exitosa !");
+//			createFile(rutaDesc);
 					
 			// Verificación de integridad con el hash
 			BufferedInputStream bis = new BufferedInputStream(new FileInputStream(rutaDesc));
@@ -123,9 +143,11 @@ public class Cliente {
 			bis.close();
 			
 			escribirEnLog("Iniciando la Validación de integridad . . . ");
-			String hash = new String(blob);
+//			String hash = new String(blob);
+			String hash = in.readLine();
 			if(hash.contains(FINARCH)) {
-				String h = hash.split(SEP)[1];
+//				String h = hash.split(SEP)[1];
+				String h = hash.replace(FINARCH, "");
 				escribirEnLog("Hash Recibido del servidor --> " + h);
 				
 				MessageDigest hashing = MessageDigest.getInstance("SHA-256");
@@ -198,15 +220,15 @@ public class Cliente {
 		out.close();
 		socket.close();
 	}
-	private void createFile(String ruta) throws IOException {
-		File f = new File(ruta);
-		FileOutputStream fos = new FileOutputStream(f);
-		if(!f.exists())
-			f.createNewFile();
-	    for (byte[] data: blobsArchivo)
-	        fos.write(data);
-	    fos.close();
-	}
+//	private void createFile(String ruta) throws IOException {
+//		File f = new File(ruta);
+//		FileOutputStream fos = new FileOutputStream(f);
+//		if(!f.exists())
+//			f.createNewFile();
+//	    for (byte[] data: blobsArchivo)
+//	        fos.write(data);
+//	    fos.close();
+//	}
 	private byte[] convertirABytes(String cadena) {
 		return DatatypeConverter.parseHexBinary(cadena);
 	}

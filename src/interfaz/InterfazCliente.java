@@ -1,6 +1,7 @@
 package interfaz;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 
 import javax.swing.JFrame;
@@ -26,10 +27,13 @@ public class InterfazCliente extends JFrame {
 		cliente = new Cliente(this);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(800, 600);
+		setSize(800, 400);
+		setResizable(false);
 		
 		setLayout(new BorderLayout());
 		logger = new JTextArea(cliente.getLog());
+		logger.setEditable(false);
+		logger.setFont(new Font(Font.MONOSPACED,Font.PLAIN, 12));
 		JScrollPane scroll = new JScrollPane(logger);
 		new SmartScroller( scroll );
 		add(scroll, BorderLayout.CENTER);

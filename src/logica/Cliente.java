@@ -13,7 +13,6 @@ import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Date;
 
-import javax.swing.JTextField;
 import javax.xml.bind.DatatypeConverter;
 
 import interfaz.InterfazCliente;
@@ -111,6 +110,7 @@ public class Cliente {
 			BufferedInputStream bis = new BufferedInputStream(new FileInputStream(rutaDesc));
 			byte[] completo = new byte[(int)(new File(rutaDesc)).length()];
 			bis.read(completo);
+			bis.close();
 			
 			escribirEnLog("Iniciando la Validación de integridad . . . ");
 			String hash = new String(blob);

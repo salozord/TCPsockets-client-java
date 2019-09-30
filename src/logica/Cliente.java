@@ -10,6 +10,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.security.MessageDigest;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -22,7 +24,7 @@ public class Cliente {
 //	public static final String SERVIDOR = "3.82.26.85";
 	public static final String SERVIDOR = "localhost";
 	public static final int PUERTO = 8080;
-	public static final String INICIO = "[CLIENTE]";
+	public static final String INICIO = " [CLIENTE] ";
 	public static final String RUTA_LOG = "./data/logs/";
 	public static final String RUTA_DOWN = "./data/descargas/";
 	public static final String PREPARADO = "PREPARADO";
@@ -60,9 +62,12 @@ public class Cliente {
 		tam = 0;
 		blobsArchivo = new ArrayList<>();
 		
-		log = INICIO + " Cliente inicializado, conectando con el servidor . . .\n";
+//		log = "";
+//		escribirEnLog("Cliente inicializado, conectando con el servidor . . .\n");
+		log = "[" + LocalDate.now() + "]" + INICIO + "Cliente inicializado, conectando con el servidor . . .\n";
 		socket = new Socket(SERVIDOR, PUERTO);
-		log += INICIO + " Conexión exitosa con el servidor " + SERVIDOR + ":" + PUERTO;
+//		escribirEnLog("Conexión exitosa con el servidor " + SERVIDOR + ":" + PUERTO);
+		log += "[" + LocalDate.now() + "]" + INICIO + "Conexión exitosa con el servidor " + SERVIDOR + ":" + PUERTO;
 		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		out = new PrintWriter(socket.getOutputStream(), true);
 	}
@@ -119,7 +124,7 @@ public class Cliente {
 			escribirEnLog("Iniciando la Validación de integridad . . . ");
 			String hash = new String(blob);
 			if(hash.contains(FINARCH)) {
-				String h = convertirAHexa(hash.split(SEP)[1].getBytes());
+				String h = hash.split(SEP)[1];
 				escribirEnLog("Hash Recibido del servidor --> " + h);
 				
 				MessageDigest hashing = MessageDigest.getInstance("SHA-256");
@@ -161,7 +166,7 @@ public class Cliente {
 	}
 	
 	public void escribirEnLog(String mensaje) {
-		this.log += "\n" + INICIO + " " + mensaje;
+		this.log += "\n[" + LocalTime.now() + "]" + INICIO + mensaje;
 		interfaz.actualizar();
 	}
 	public String getLog() {

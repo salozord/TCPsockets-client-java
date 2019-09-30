@@ -39,7 +39,7 @@ public class InterfazCliente extends JFrame {
 		add(scroll, BorderLayout.CENTER);
 		
 		JPanel aux = new JPanel();
-		aux.setLayout(new GridLayout(1, 7));
+		aux.setLayout(new GridLayout(1, 6));
 		
 		aux.add(new JLabel("Nombre Archivo:"));
 		nombreArchivo = new JTextField(cliente.getNombreArchivo());

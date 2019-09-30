@@ -80,12 +80,13 @@ public class Cliente {
 			escribirEnLog("Mensaje enviado al servidor");
 	
 			String leido = in.readLine();
+			
 			byte[] bytesLeido = convertirABytes(leido);
 			String nombre = new String( bytesLeido );
 			// Esperando la recepción del nombre del archivo a descargar
 //			String nombre = new String(convertirABytes(in.readLine()));
 			if(nombre.contains(NOMBRE)) {
-				String n = nombre.split(SEP)[1];
+				String n = nombre.replace(NOMBRE, "");
 				escribirEnLog("Nombre del archivo a descargar recibido --> " + n);
 			}
 			else {
@@ -155,6 +156,8 @@ public class Cliente {
 		}
 		catch(Exception e) {
 			escribirEnLog("ERROR :: Ocurrió algún error inesperado: " + e.getMessage());
+			e.printStackTrace();
+
 		}
 		finally {
 			try {

@@ -58,6 +58,7 @@ public class Cliente {
 		nombreArchivo = "Ninguno";
 		numPaquetes = 0;
 		tam = 0;
+		blobsArchivo = new ArrayList<>();
 		
 		log = INICIO + " Cliente inicializado, conectando con el servidor . . .\n";
 		socket = new Socket(SERVIDOR, PUERTO);
@@ -72,8 +73,11 @@ public class Cliente {
 			out.print(PREPARADO);
 			escribirEnLog("Mensaje enviado al servidor");
 	
+			String leido = in.readLine();
+			byte[] bytesLeido = convertirABytes(leido);
+			String nombre = new String( bytesLeido );
 			// Esperando la recepción del nombre del archivo a descargar
-			String nombre = new String(convertirABytes(in.readLine()));
+//			String nombre = new String(convertirABytes(in.readLine()));
 			if(nombre.contains(NOMBRE)) {
 				String n = nombre.split(SEP)[1];
 				escribirEnLog("Nombre del archivo a descargar recibido --> " + n);

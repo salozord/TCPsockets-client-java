@@ -85,6 +85,7 @@ public class Cliente {
 			String nombre = in.readLine();
 			if(nombre.contains(NOMBRE)) {
 				String n = nombre.replace(NOMBRE, "");
+				nombreArchivo = n;
 				escribirEnLog("Nombre del archivo a descargar recibido --> " + n);
 			}
 			else {
@@ -100,7 +101,7 @@ public class Cliente {
 			FileOutputStream fos = new FileOutputStream(f);
 			if(!f.exists())
 				f.createNewFile();
-			byte[] buffer = new byte[1024];
+			byte[] buffer = new byte[8000];
 			
 			// Contabilizando el tiempo inicial
 			long ini = System.currentTimeMillis();
@@ -131,7 +132,7 @@ public class Cliente {
 			escribirEnLog("Escritura del archivo exitosa !");
 			escribirEnLog("Finalizó el envío del archivo. El tiempo total fue de " + tiempo + " segundos");
 			escribirEnLog("Número total de paquetes recibidos: " + numPaquetes + " paquetes");
-			escribirEnLog("Tamaño total del archivo recibido: " + tam/(1024^2) + " MiBytes");
+			escribirEnLog("Tamaño total del archivo recibido: " + (tam/(1024^2)) + " MiBytes");
 			
 			// Guardando el archivo en local
 //			createFile(rutaDesc);
@@ -201,7 +202,7 @@ public class Cliente {
 		return nombreArchivo;
 	}
 	public String getTam() {
-		return String.valueOf(tam/(1024^2));
+		return String.valueOf((tam/(1024^2)));
 	}
 	public String getNumPaquetes() {
 		return String.valueOf(numPaquetes);

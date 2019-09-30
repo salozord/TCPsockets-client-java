@@ -2,10 +2,7 @@ package interfaz;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,6 +14,7 @@ import logica.Cliente;
 
 public class InterfazCliente extends JFrame {
 	
+	private static final long serialVersionUID = 1L;
 	private Cliente cliente;
 	private JTextArea logger;
 	private JTextField nombreArchivo;
@@ -55,6 +53,10 @@ public class InterfazCliente extends JFrame {
 		add(aux, BorderLayout.SOUTH);
 	}
 	
+	public Cliente getCliente() {
+		return cliente;
+	}
+	
 	public void actualizar() {
 		this.logger.setText(cliente.getLog());
 		this.nombreArchivo.setText(cliente.getNombreArchivo());
@@ -66,6 +68,7 @@ public class InterfazCliente extends JFrame {
 		try {
 			InterfazCliente i = new InterfazCliente();
 			i.setVisible(true);
+			i.getCliente().comunicarse();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

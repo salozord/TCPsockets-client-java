@@ -19,7 +19,7 @@ public class InterfazCliente extends JFrame {
 	private JTextField numPaquetes;
 	private JTextField tam;
 	
-	public InterfazCliente() {
+	public InterfazCliente() throws Exception {
 		
 		cliente = new Cliente();
 		setLocationRelativeTo(null);
@@ -28,16 +28,23 @@ public class InterfazCliente extends JFrame {
 		
 		setLayout(new BorderLayout());
 		logger = new JTextArea();
+		add(logger, BorderLayout.CENTER);
 		
 		JPanel aux = new JPanel();
-		aux.setLayout(new GridLayout(1, 4));
+		aux.setLayout(new GridLayout(1, 6));
 		
 		aux.add(new JLabel("Nombre Archivo:"));
-		
-		aux.add(new JLabel("Nombre Archivo:"));
-		
-		aux.add(new JLabel("Nombre Archivo:"));
-		aux.add(new JLabel("Nombre Archivo:"));
+		nombreArchivo = new JTextField("NINGUNO");
+		nombreArchivo.setEditable(false);
+		aux.add(nombreArchivo);
+		aux.add(new JLabel("Paquetes Recibidos:"));
+		numPaquetes = new JTextField("0");
+		numPaquetes.setEditable(false);
+		aux.add(numPaquetes);
+		aux.add(new JLabel("Tamaño(MiB):"));
+		tam = new JTextField("0");
+		tam.setEditable(false);
+		aux.add(tam);
 		
 		add(aux, BorderLayout.SOUTH);
 	}
@@ -47,18 +54,25 @@ public class InterfazCliente extends JFrame {
 	public void actualizarLogger(String nuevo) {
 		this.logger.setText(nuevo);
 	}
-	
-	
 	public void actualizarNombreArchivo(String nuevo) {
-		this.
+		this.nombreArchivo.setText(nuevo);
+	}
+	public void actualizarNumPaquetes(String nuevo) {
+		this.numPaquetes.setText(nuevo);
+	}
+	public void actualizarTam(String nuevo) {
+		this.tam.setText(nuevo);
 	}
 	
 	
-	
 	public static void main(String[] args) {
-		
-		InterfazCliente i = new InterfazCliente();
-		i.setVisible(true);
+		try {
+			InterfazCliente i = new InterfazCliente();
+			i.setVisible(true);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }

@@ -107,7 +107,9 @@ public class Cliente {
 			long ini = System.currentTimeMillis();
 			int r;
 			// Recibiendo paquetes del archivo a descargar
-			while ((r = dis.read(buffer)) != -1) {
+			
+			while ((r = dis.read(buffer)) > 0 ) {
+				//System.out.println(r);
 				fos.write(buffer, 0, r);
 				numPaquetes++;
 				tam += (r);
@@ -115,7 +117,7 @@ public class Cliente {
 			}
 			fos.flush(); // POr si acaso algo queda en el buffer de escritura
 			fos.close();
-			dis.close();
+			//dis.close();
 			
 //			byte[] blob = convertirABytes(in.readLine());
 //			while(!(new String(blob)).contains(FINARCH)) {

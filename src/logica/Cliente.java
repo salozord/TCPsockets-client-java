@@ -9,7 +9,10 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import javax.swing.JTextField;
 import javax.xml.bind.DatatypeConverter;
+
+import interfaz.InterfazCliente;
 
 public class Cliente {
 
@@ -34,21 +37,34 @@ public class Cliente {
 	
 	private ArrayList<byte[]> blobsArchivo;
 	
-	public Cliente() throws Exception {
-			socket = new Socket(SERVIDOR, PUERTO);
-			log = INICIO + "Cliente inicializado, conectando con el servidor . . .";
-			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			out = new PrintWriter(socket.getOutputStream(), true);
-			try {				
-				comunicarse();
-			}
-			catch (Exception e) {
-				escribirEnLog("ERROR :: Ocurrió un error: " + e.getMessage());
-			}
-	}
+	private InterfazCliente interfaz;
 	
-	public void escribirEnLog(String mensaje) {
-		this.log += "\n" + INICIO + mensaje;
+	private String nombreArchivo;
+	
+	private long numPaquetes;
+	
+	private long tam;
+	
+	private long tiempo;
+	
+	public Cliente(InterfazCliente i) throws Exception {
+		
+		interfaz = i;
+		nombreArchivo = "Ninguno";
+		numPaquetes = 0;
+		tam = 0;
+		
+		log = INICIO + "Cliente inicializado, conectando con el servidor . . .";
+		socket = new Socket(SERVIDOR, PUERTO);
+		escribirEnLog("Conexión exitosa con el servidor " + SERVIDOR + ":" + PUERTO);
+		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		out = new PrintWriter(socket.getOutputStream(), true);
+		try {				
+			comunicarse();
+		}
+		catch (Exception e) {
+			escribirEnLog("ERROR :: Ocurrió un error: " + e.getMessage());
+		}
 	}
 	
 	public void comunicarse() throws Exception {
@@ -60,18 +76,54 @@ public class Cliente {
 		String nombre = new String(convertirABytes(in.readLine()));
 		if(nombre.contains(NOMBRE)) {
 			String n = nombre.split(SEP)[1];
-			
+			escribirEnLog("Nombre del archivo a descargar recibido --> " + n);
 		}
 		else {
 			escribirEnLog("ERROR :: Llegó un mensaje que no debía llegar " + nombre);
 			cerrar();
 		}
 		
+		// Contabilizando el tiempo inicial
+		long ini = System.currentTimeMillis();
+		
+		// Recibiendo paquetes del archivo a descargar
 		
 		
+		// Contabilizando el tiempo final
+		long fin = System.currentTimeMillis();
+		
+		String hash = new String(convertirABytes(in.readLine()));
+		if(nombre.contains(NOMBRE)) {
+			String n = nombre.split(SEP)[1];
+			escribirEnLog("Nombre del archivo a descargar recibido --> " + n);
+		}
+		else {
+			escribirEnLog("ERROR :: Llegó un mensaje que no debía llegar " + nombre);
+			cerrar();
+		}
+		
+		tiempo = (fin - ini)/1000;
+		escribirEnLog("Finalizó el envío del archivo. El tiempo total fue de " + tiempo + " segundos");
 		
 		// Cierre de los canales
 		cerrar();
+	}
+	
+	public void escribirEnLog(String mensaje) {
+		this.log += "\n" + INICIO + mensaje;
+		interfaz.actualizar();
+	}
+	public String getLog() {
+		return log;
+	}
+	public String getNombreArchivo() {
+		return nombreArchivo;
+	}
+	public String getTam() {
+		return String.valueOf(tam/(1024^2));
+	}
+	public String getNumPaquetes() {
+		return String.valueOf(numPaquetes);
 	}
 	
 	private void cerrar() throws IOException {
@@ -79,18 +131,16 @@ public class Cliente {
 		in.close();
 		socket.close();
 	}
-	
-	public void createFile(String ruta) throws IOException {
+	private void createFile(String ruta) throws IOException {
 	    FileOutputStream fos = new FileOutputStream(new File(ruta));
 	    for (byte[] data: blobsArchivo)
 	        fos.write(data);
 	}
-	
-	public byte[] convertirABytes(String cadena) {
+	private byte[] convertirABytes(String cadena) {
 		return DatatypeConverter.parseHexBinary(cadena);
 	}
 	
-	public String convertirAHexa(byte[] informacion) {
+	private String convertirAHexa(byte[] informacion) {
 		return DatatypeConverter.printHexBinary(informacion);
 	}
 }

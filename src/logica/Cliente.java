@@ -101,7 +101,7 @@ public class Cliente {
 			FileOutputStream fos = new FileOutputStream(f);
 			if(!f.exists())
 				f.createNewFile();
-			byte[] buffer = new byte[8000];
+			byte[] buffer = new byte[8192];
 			
 			// Contabilizando el tiempo inicial
 			long ini = System.currentTimeMillis();

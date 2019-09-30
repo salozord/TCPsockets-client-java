@@ -82,7 +82,7 @@ public class Cliente {
 			// Esperando la recepción del nombre del archivo a descargar
 			String nombre = in.readLine();
 			if(nombre.contains(NOMBRE)) {
-				String n = nombre.split(SEP)[1];
+				String n = nombre.replace(NOMBRE, "");
 				escribirEnLog("Nombre del archivo a descargar recibido --> " + n);
 			}
 			else {
@@ -155,6 +155,8 @@ public class Cliente {
 		}
 		catch(Exception e) {
 			escribirEnLog("ERROR :: Ocurrió algún error inesperado: " + e.getMessage());
+			e.printStackTrace();
+
 		}
 		finally {
 			try {

@@ -175,7 +175,7 @@ public class Cliente {
 	
 	private void cerrar() throws IOException {
 		// Se debe primero escribir el log
-		File f = new File(RUTA_LOG + (new Date()).toString() + "-LOG.log");
+		File f = new File(RUTA_LOG + (new Date()).toString().replace(":", "-") + "-LOG.log");
 		FileOutputStream fos = new FileOutputStream(f);
 		if(!f.exists())
 			f.createNewFile();

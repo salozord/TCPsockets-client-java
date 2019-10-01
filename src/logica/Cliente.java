@@ -120,7 +120,7 @@ public class Cliente {
 			}
 			fos.flush(); // Por si acaso algo queda en el buffer de escritura
 			fos.close();
-			//dis.close();
+			
 			
 //			byte[] blob = convertirABytes(in.readLine());
 //			while(!(new String(blob)).contains(FINARCH)) {
@@ -130,6 +130,7 @@ public class Cliente {
 //				escribirEnLog("Paquete Recibido! tamaño: " + blob.length + " bytes");
 //				blob = convertirABytes(in.readLine());
 //			}
+			
 			
 			// Contabilizando el tiempo final
 			long fin = System.currentTimeMillis();
@@ -141,7 +142,7 @@ public class Cliente {
 			
 			// Guardando el archivo en local
 //			createFile(rutaDesc);
-					
+			out.println("TODONICE");
 			// Verificación de integridad con el hash
 //			BufferedInputStream bis = new BufferedInputStream(new FileInputStream(rutaDesc));
 //			byte[] completo = new byte[(int)(new File(rutaDesc)).length()];
@@ -190,15 +191,12 @@ public class Cliente {
 		catch(Exception e) {
 			escribirEnLog("ERROR :: Ocurrió algún error inesperado: " + e.getMessage());
 			e.printStackTrace();
-		}
-		finally {
 			try {
 				cerrar();
-			} catch (IOException e) {
+			} catch (Exception e2) {
 				e.printStackTrace();
 			}
-		}
-		
+		}		
 	}
 	
 	public void escribirEnLog(String mensaje) {

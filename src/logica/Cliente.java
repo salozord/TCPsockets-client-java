@@ -67,10 +67,10 @@ public class Cliente {
 		
 //		log = "";
 //		escribirEnLog("Cliente inicializado, conectando con el servidor . . .\n");
-		log = "[" + LocalDate.now() + "]" + INICIO + "Cliente inicializado, conectando con el servidor . . .\n";
+		log = "[" + LocalTime.now() + "]" + INICIO + "Cliente inicializado, conectando con el servidor . . .\n";
 		socket = new Socket(SERVIDOR, PUERTO);
 //		escribirEnLog("Conexión exitosa con el servidor " + SERVIDOR + ":" + PUERTO);
-		log += "[" + LocalDate.now() + "]" + INICIO + "Conexión exitosa con el servidor " + SERVIDOR + ":" + PUERTO;
+		log += "[" + LocalTime.now() + "]" + INICIO + "Conexión exitosa con el servidor " + SERVIDOR + ":" + PUERTO;
 		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		out = new PrintWriter(socket.getOutputStream(), true);
 	}
@@ -165,24 +165,29 @@ public class Cliente {
 					escribirEnLog("El Archivo se verificó y no contiene errores ! :D");
 					escribirEnLog("Se le envía al servidor confirmación: " + RECIBIDO);
 					out.println(RECIBIDO);
+					// Cierre de los canales
+					escribirEnLog("Mensaje de confimación exitosa enviado correctamente :D !");
+					escribirEnLog("Cerrando conexión satisfactoriamente . . .!");
+					cerrar();
 				}
 				else {
 					escribirEnLog("El archivo se corrompió :( tiene errores porque los hashes no coinciden");
 					escribirEnLog("Se le envía al servidor mensaje de error: " + ERROR);
 					out.println(ERROR);
+					// Cierre de los canales
+					escribirEnLog("Mensaje de error enviado correctamente :(");
+					escribirEnLog("Cerrando conexión por finalización de proceso erróneo :( . . .");
+					cerrar();
 				}
 			}
 			else {
 				escribirEnLog("ERROR :: Llegó un mensaje que no debía llegar " + hash);
 				cerrar();
 			}
-			// Cierre de los canales
-			cerrar();
 		}
 		catch(Exception e) {
 			escribirEnLog("ERROR :: Ocurrió algún error inesperado: " + e.getMessage());
 			e.printStackTrace();
-
 		}
 		finally {
 			try {

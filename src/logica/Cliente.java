@@ -110,8 +110,9 @@ public class Cliente {
 			
 			// Recibiendo paquetes del archivo a descargar
 			long tamTotal = dis.readLong();
-			while (tam < tamTotal && (r = dis.read(buffer)) != -1 ) {
-				//System.out.println(r);
+			System.out.println(tamTotal);
+			while (tam < tamTotal && (r = dis.read(buffer)) != -1 ) 
+			{
 				fos.write(buffer, 0, r);
 				hashing.update(buffer, 0, r);
 				numPaquetes++;
@@ -151,7 +152,10 @@ public class Cliente {
 			escribirEnLog("Iniciando la Validación de integridad . . . ");
 //			String hash = new String(blob);
 			String hash = in.readLine();
-			if(hash.contains(FINARCH)) {
+			System.out.println("///");
+			if(hash.contains(FINARCH)) 
+			{
+				
 //				String h = hash.split(SEP)[1];
 				String h = hash.replace(FINARCH, "");
 				escribirEnLog("Hash Recibido del servidor --> " + h);

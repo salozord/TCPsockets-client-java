@@ -102,6 +102,7 @@ public class Cliente {
 			if(!f.exists())
 				f.createNewFile();
 			byte[] buffer = new byte[8192];
+			MessageDigest hashing = MessageDigest.getInstance("SHA-256");
 			
 			// Contabilizando el tiempo inicial
 			long ini = System.currentTimeMillis();
@@ -112,11 +113,12 @@ public class Cliente {
 			while (tam < tamTotal && (r = dis.read(buffer)) != -1 ) {
 				//System.out.println(r);
 				fos.write(buffer, 0, r);
+				hashing.update(buffer, 0, r);
 				numPaquetes++;
 				tam += (r);
 				escribirEnLog("Paquete Recibido! tamaño: " + (r) + " bytes");
 			}
-			fos.flush(); // POr si acaso algo queda en el buffer de escritura
+			fos.flush(); // Por si acaso algo queda en el buffer de escritura
 			fos.close();
 			//dis.close();
 			
@@ -141,10 +143,10 @@ public class Cliente {
 //			createFile(rutaDesc);
 					
 			// Verificación de integridad con el hash
-			BufferedInputStream bis = new BufferedInputStream(new FileInputStream(rutaDesc));
-			byte[] completo = new byte[(int)(new File(rutaDesc)).length()];
-			bis.read(completo);
-			bis.close();
+//			BufferedInputStream bis = new BufferedInputStream(new FileInputStream(rutaDesc));
+//			byte[] completo = new byte[(int)(new File(rutaDesc)).length()];
+//			bis.read(completo);
+//			bis.close();
 			
 			escribirEnLog("Iniciando la Validación de integridad . . . ");
 //			String hash = new String(blob);
@@ -154,8 +156,8 @@ public class Cliente {
 				String h = hash.replace(FINARCH, "");
 				escribirEnLog("Hash Recibido del servidor --> " + h);
 				
-				MessageDigest hashing = MessageDigest.getInstance("SHA-256");
-				hashing.update(completo);
+//				MessageDigest hashing = MessageDigest.getInstance("SHA-256");
+//				hashing.update(completo);
 				byte[] fileHashed = hashing.digest();
 				String created = convertirAHexa(fileHashed);
 				

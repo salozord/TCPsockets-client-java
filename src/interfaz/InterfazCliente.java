@@ -21,6 +21,7 @@ public class InterfazCliente extends JFrame {
 	private JTextField nombreArchivo;
 	private JTextField numPaquetes;
 	private JTextField tam;
+	private JTextField tiempo;
 	
 	public InterfazCliente() throws Exception {
 		

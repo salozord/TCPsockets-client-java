@@ -135,7 +135,7 @@ public class Cliente {
 			escribirEnLog("Escritura del archivo exitosa !");
 			escribirEnLog("Finalizó el envío del archivo. El tiempo total fue de " + tiempo + " segundos");
 			escribirEnLog("Número total de paquetes recibidos: " + numPaquetes + " paquetes");
-			escribirEnLog("Tamaño total del archivo recibido: " + (tam/(1024^2)) + " MiBytes");
+			escribirEnLog("Tamaño total del archivo recibido: " + (tam/(1024.0*1024.0)) + " MiBytes");
 			
 			// Guardando el archivo en local
 //			createFile(rutaDesc);
@@ -210,7 +210,7 @@ public class Cliente {
 		return nombreArchivo;
 	}
 	public String getTam() {
-		return String.valueOf((tam/(1024^2)));
+		return String.valueOf((tam/(1024.0*1024.0)));
 	}
 	public String getNumPaquetes() {
 		return String.valueOf(numPaquetes);
@@ -219,11 +219,13 @@ public class Cliente {
 	private void cerrar() throws IOException {
 		// Se debe primero escribir el log
 		File f = new File(RUTA_LOG + (new Date()).toString().replace(":", "-") + "-LOG.log");
+		escribirEnLog("Registrando todo en archivo LOG local . . .");
 		FileOutputStream fos = new FileOutputStream(f);
 		if(!f.exists())
 			f.createNewFile();
 	    fos.write(log.getBytes());
 	    fos.close();
+		escribirEnLog("Log generado ! Hasta la próxima :D !");
 		
 	    in.close();
 		out.close();

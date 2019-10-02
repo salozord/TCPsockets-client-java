@@ -70,7 +70,7 @@ public class Cliente {
 		out = new PrintWriter(socket.getOutputStream(), true);
 	}
 	
-	public void comunicarse() {
+	public void comunicarse() throws Exception {
 		try {
 			escribirEnLog("Enviando mensaje de " + PREPARADO + " al servidor");
 			out.println(PREPARADO);
@@ -161,6 +161,7 @@ public class Cliente {
 					escribirEnLog("Mensaje de confimación exitosa enviado correctamente :D !");
 					escribirEnLog("Cerrando conexión satisfactoriamente . . .!");
 					cerrar();
+					throw new Exception("Funciona!");
 				}
 				else {
 					escribirEnLog("El archivo se corrompió :( tiene errores porque los hashes no coinciden");
@@ -172,12 +173,16 @@ public class Cliente {
 					cerrar();
 				}
 			}
-			else {
+			else 
+			{
 				escribirEnLog("ERROR :: Llegó un mensaje que no debía llegar " + hash);
 				cerrar();
 			}
 		}
 		catch(Exception e) {
+			if(e.getMessage().equals("Funciona!")){
+				throw new Exception("Funciona!");
+			}
 			escribirEnLog("ERROR :: Ocurrió algún error inesperado: " + e.getMessage());
 			e.printStackTrace();
 			try {
@@ -190,7 +195,7 @@ public class Cliente {
 	
 	public void escribirEnLog(String mensaje) {
 		this.log += "\n[" + LocalTime.now() + "]" + INICIO + mensaje;
-		interfaz.actualizar();
+		if(interfaz != null) interfaz.actualizar();
 	}
 	public String getLog() {
 		return log;
@@ -209,7 +214,7 @@ public class Cliente {
 		// Se debe primero escribir el log
 		File f = new File(RUTA_LOG + (new Date()).toString().replace(":", "-") + "-LOG.log");
 		escribirEnLog("Registrando todo en archivo LOG local . . .");
-		FileOutputStream fos = new FileOutputStream(f);
+		FileOutputStream fos = new FileOutputStream(f, true);
 		if(!f.exists())
 			f.createNewFile();
 	    fos.write(log.getBytes());

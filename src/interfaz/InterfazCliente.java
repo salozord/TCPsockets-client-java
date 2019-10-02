@@ -75,6 +75,9 @@ public class InterfazCliente extends JFrame {
 			i.setVisible(true);
 			i.getCliente().comunicarse();
 		} catch (Exception e) {
+			if(e.getMessage().equals("Funciona!")){
+				return;
+			}
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

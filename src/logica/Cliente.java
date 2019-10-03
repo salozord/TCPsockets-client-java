@@ -19,7 +19,7 @@ import interfaz.InterfazCliente;
 public class Cliente {
 
 //	public static final String SERVIDOR = "3.82.26.85";
-	public static final String SERVIDOR = "localhost";
+	public static final String SERVIDOR = "3.80.255.231";
 //	public static final String SERVIDOR = "25.5.99.233";
 	public static final int PUERTO = 8080;
 	public static final String INICIO = " [CLIENTE] ";
@@ -75,9 +75,11 @@ public class Cliente {
 			escribirEnLog("Enviando mensaje de " + PREPARADO + " al servidor");
 			out.println(PREPARADO);
 			escribirEnLog("Mensaje enviado al servidor");
-	
+			
 			// Esperando la recepción del nombre del archivo a descargar
 			String nombre = in.readLine();
+
+			System.out.println("ACA ALGO1");
 			if(nombre.contains(NOMBRE)) {
 				String n = nombre.replace(NOMBRE, "");
 				nombreArchivo = n;
@@ -98,6 +100,9 @@ public class Cliente {
 				f.createNewFile();
 			byte[] buffer = new byte[8192];
 			MessageDigest hashing = MessageDigest.getInstance("SHA-256");
+			
+
+			System.out.println("ACA ALGO2");
 			
 			// Contabilizando el tiempo inicial
 			long ini = System.currentTimeMillis();

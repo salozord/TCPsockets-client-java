@@ -1,29 +1,32 @@
 package test;
 
-import java.io.IOException;
-import java.net.Socket;
-
 import org.junit.*;
 import static org.junit.Assert.*;
+
 
 import logica.Cliente;
 
 public class ClientTest {
 	
+	Cliente cliente = null;
+	
 	@Test
 	public void testConnection()
 	{
-		Cliente cliente = null;
 		try 
 		{
 			cliente = new Cliente(null);
-			
 		} 
 		catch (Exception e) {
 			// TODO Auto-generated catch block
 			fail("Falla la conexión con el servidor");
 		}
-		
+	}
+	
+	@Test
+	public void testCommunication()
+	{
+		System.out.println("Aca");
 		try 
 		{
 			cliente.comunicarse();

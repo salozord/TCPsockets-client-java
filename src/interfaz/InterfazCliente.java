@@ -28,7 +28,7 @@ public class InterfazCliente extends JFrame {
 		cliente = new Cliente(this);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(800, 400);
+		setSize(900, 430);
 		setResizable(false);
 		
 		setLayout(new BorderLayout());
@@ -40,7 +40,7 @@ public class InterfazCliente extends JFrame {
 		add(scroll, BorderLayout.CENTER);
 		
 		JPanel aux = new JPanel();
-		aux.setLayout(new GridLayout(1, 6));
+		aux.setLayout(new GridLayout(1, 8, 7, 15));
 		
 		aux.add(new JLabel("Nombre Archivo:"));
 		nombreArchivo = new JTextField(cliente.getNombreArchivo());
@@ -54,6 +54,10 @@ public class InterfazCliente extends JFrame {
 		tam = new JTextField(cliente.getTam());
 		tam.setEditable(false);
 		aux.add(tam);
+		aux.add(new JLabel("Tiempo(s):"));
+		tiempo = new JTextField(cliente.getTiempo());
+		tiempo.setEditable(false);
+		aux.add(tiempo);
 		
 		add(aux, BorderLayout.SOUTH);
 	}
@@ -67,6 +71,7 @@ public class InterfazCliente extends JFrame {
 		this.nombreArchivo.setText(cliente.getNombreArchivo());
 		this.numPaquetes.setText(cliente.getNumPaquetes());
 		this.tam.setText(cliente.getTam());
+		this.tiempo.setText(cliente.getTiempo());
 	}
 	
 	public static void main(String[] args) {

@@ -29,10 +29,11 @@ public class ClientTest {
 		System.out.println("Aca");
 		try 
 		{
-			cliente.comunicarse();
-			fail("Si llega aca, el envio del archivo tuvo un error");
+			int res = cliente.comunicarse();
+			assertEquals("Debería estar bien el estado porque debería funcionar correctamente", Cliente.BIEN, res);
 		} 
 		catch (Exception e) {
+			fail("Si llega aca, el envio del archivo tuvo un error");
 			// TODO: handle exception
 		}
 	}

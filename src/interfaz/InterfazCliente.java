@@ -3,6 +3,8 @@ package interfaz;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -10,10 +12,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.Timer;
 
 import logica.Cliente;
 
-public class InterfazCliente extends JFrame {
+public class InterfazCliente extends JFrame implements ActionListener {
 	
 	private static final long serialVersionUID = 1L;
 	private Cliente cliente;
@@ -22,10 +25,12 @@ public class InterfazCliente extends JFrame {
 	private JTextField numPaquetes;
 	private JTextField tam;
 	private JTextField tiempo;
+	private Timer timer;
 	
 	public InterfazCliente() throws Exception {
 		
-		cliente = new Cliente(this);
+		cliente = new Cliente();
+		timer = new Timer(100, this);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(900, 430);
@@ -66,6 +71,14 @@ public class InterfazCliente extends JFrame {
 		return cliente;
 	}
 	
+	public void iniciarActualizacion() {
+		timer.start();
+	}
+	
+	public void finalizar() {
+		timer.stop();
+	}
+	
 	public void actualizar() {
 		this.logger.setText(cliente.getLog());
 		this.nombreArchivo.setText(cliente.getNombreArchivo());
@@ -74,16 +87,18 @@ public class InterfazCliente extends JFrame {
 		this.tiempo.setText(cliente.getTiempo());
 	}
 	
+	public void actionPerformed(ActionEvent e) {
+		actualizar();
+	}
+	
 	public static void main(String[] args) {
 		try {
 			InterfazCliente i = new InterfazCliente();
 			i.setVisible(true);
+			i.iniciarActualizacion();
 			i.getCliente().comunicarse();
+			i.finalizar();
 		} catch (Exception e) {
-			if(e.getMessage().equals("Funciona!")){
-				return;
-			}
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

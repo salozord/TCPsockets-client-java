@@ -15,7 +15,7 @@ public class ClientTest {
 	{
 		try 
 		{
-			cliente = new Cliente(null);
+			cliente = new Cliente();
 		} 
 		catch (Exception e) {
 			// TODO Auto-generated catch block

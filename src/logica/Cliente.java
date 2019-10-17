@@ -9,12 +9,11 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.security.MessageDigest;
+import java.text.DecimalFormat;
 import java.time.LocalTime;
 import java.util.Date;
 
 import javax.xml.bind.DatatypeConverter;
-
-import interfaz.InterfazCliente;
 
 public class Cliente {
 
@@ -35,7 +34,7 @@ public class Cliente {
 	public static final String SEP = "$";
 	public static final int BIEN = 1;
 	public static final int MAL = -1;	
-	
+
 	
 	private String log;
 	
@@ -44,8 +43,6 @@ public class Cliente {
 	private PrintWriter out;
 	
 	private BufferedReader in;
-
-	private InterfazCliente interfaz;
 	
 	private String nombreArchivo;
 	
@@ -57,8 +54,9 @@ public class Cliente {
 	
 	private int estado;
 	
-	public Cliente(InterfazCliente i) throws Exception {
-		interfaz = i;
+	private DecimalFormat formato;
+	
+	public Cliente() throws Exception {
 		nombreArchivo = "Ninguno";
 		numPaquetes = 0;
 		tam = 0;
@@ -74,6 +72,7 @@ public class Cliente {
 		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		out = new PrintWriter(socket.getOutputStream(), true);
 		estado = BIEN;
+		formato = new DecimalFormat("#.000");
 	}
 	
 	public int comunicarse() throws Exception {
@@ -211,7 +210,7 @@ public class Cliente {
 	
 	public void escribirEnLog(String mensaje) {
 		this.log += "\n[" + LocalTime.now() + "]" + INICIO + mensaje;
-		if(interfaz != null) interfaz.actualizar();
+//		if(interfaz != null) interfaz.actualizar();
 	}
 	public String getLog() {
 		return log;
@@ -220,7 +219,7 @@ public class Cliente {
 		return nombreArchivo;
 	}
 	public String getTam() {
-		return String.valueOf((tam/(1024.0*1024.0)));
+		return String.valueOf(formato.format(tam/(1024.0*1024.0)));
 	}
 	public String getNumPaquetes() {
 		return String.valueOf(numPaquetes);
